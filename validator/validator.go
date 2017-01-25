@@ -27,7 +27,7 @@ func (validator *Validator) SetJSONSchema(jsonSchemaPath string) {
 	validator.PathToJsonSchema = jsonSchemaPath
 }
 
-func (validator *Validator) validate(jsonSchema string, jsonString string) bool {
+func (validator *Validator) Validate(jsonSchema string, jsonString string) bool {
 	validator.CheckJson(jsonString)
 	if !validator.IsJson {
 		fmt.Println("Attention! Wrong JSON text")

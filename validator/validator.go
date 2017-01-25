@@ -2,43 +2,37 @@ package validator
 
 import (
 	"strings"
-	"fmt"
 	"github.com/xeipuuv/gojsonschema"
-	"log"
 )
 
 type Validator struct {
 	Json             string
 	PathToJsonSchema string
-	IsJson           bool
 }
 
 func (validator *Validator) SetJSON(jsonText string) {
 	validator.Json = jsonText
 }
 
-func (validator *Validator) CheckJson(text string) {
+func (validator *Validator) CheckJson(text string) bool {
 	trim := strings.TrimSpace(text)
 	check := string(trim[0]) == "{" && string(trim[len(trim) - 1]) == "}"
-	validator.IsJson = check
+	return check
 }
 
 func (validator *Validator) SetJSONSchema(jsonSchemaPath string) {
 	validator.PathToJsonSchema = jsonSchemaPath
 }
 
-func (validator *Validator) Validate(jsonSchema string, jsonString string) bool {
-	validator.CheckJson(jsonString)
-	if !validator.IsJson {
-		fmt.Println("Attention! Wrong JSON text")
+func (validator *Validator) Validate() bool {
+	if !validator.CheckJson(validator.Json) {
+		return false
 	}
-	schemaLoader := gojsonschema.NewReferenceLoader(jsonSchema)
-	documentLoader := gojsonschema.NewStringLoader(jsonString)
+	schemaLoader := gojsonschema.NewReferenceLoader(validator.PathToJsonSchema)
+	documentLoader := gojsonschema.NewStringLoader(validator.Json)
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
 	if err != nil {
 		return false
-		log.Fatal(err)
-		panic(err.Error())
 	}
 	return result.Valid()
 }

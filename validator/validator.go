@@ -32,6 +32,7 @@ func (validator *Validator) Validate() bool {
 	documentLoader := gojsonschema.NewStringLoader(validator.Json)
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
 	if err != nil {
+
 		return false
 	}
 	return result.Valid()

@@ -24,7 +24,7 @@ func (validator *Validator) SetJSONSchema(jsonSchemaPath string) {
 	validator.PathToJsonSchema = jsonSchemaPath
 }
 
-func (validator *Validator) Validate() bool {
+func (validator *Validator) IsValid() bool {
 	if !validator.CheckJson(validator.Json) {
 		return false
 	}
@@ -32,7 +32,6 @@ func (validator *Validator) Validate() bool {
 	documentLoader := gojsonschema.NewStringLoader(validator.Json)
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
 	if err != nil {
-
 		return false
 	}
 	return result.Valid()

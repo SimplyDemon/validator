@@ -5,6 +5,7 @@ import (
 	"github.com/xeipuuv/gojsonschema"
 )
 
+
 type Validator struct {
 	Json             string
 	PathToJsonSchema string
